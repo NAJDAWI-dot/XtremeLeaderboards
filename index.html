@@ -29,7 +29,10 @@ window.XP_SETTINGS = {
   ]
 };
 </script>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="10" fill="#22395A"/%3E%3Ccircle cx="32" cy="32" r="27" fill="none" stroke="#8BB8DD" stroke-width="5" stroke-dasharray="2.6 2.4" transform="rotate%28-80 32 32%29" pathLength="100" opacity=".9"/%3E%3Cpath d="M45.9 18.6A19 19 0 1 0 45.9 45.4" fill="none" stroke="#D6EBFB" stroke-width="3.2"/%3E%3Ccircle cx="45.9" cy="18.6" r="3.2" fill="#5CFF9D"/%3E%3Ccircle cx="45.9" cy="45.4" r="3.2" fill="#5CFF9D"/%3E%3Cpath d="M19 19h9l18 26h-9zM40 19h7L28 45h-7z" fill="#fff"/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2210%22 fill=%22%2322395A%22/%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2227%22 fill=%22none%22 stroke=%22%238BB8DD%22 stroke-width=%225%22 stroke-dasharray=%222.6 2.4%22 transform=%22rotate%28-80 32 32%29%22 pathLength=%22100%22 opacity=%22.9%22/%3E%3Cpath d=%22M45.9 18.6A19 19 0 1 0 45.9 45.4%22 fill=%22none%22 stroke=%22%23D6EBFB%22 stroke-width=%223.2%22/%3E%3Ccircle cx=%2245.9%22 cy=%2218.6%22 r=%223.2%22 fill=%22%235CFF9D%22/%3E%3Ccircle cx=%2245.9%22 cy=%2245.4%22 r=%223.2%22 fill=%22%235CFF9D%22/%3E%3Cpath d=%22M19 19h9l18 26h-9zM40 19h7L28 45h-7z%22 fill=%22%23fff%22/%3E%3C/svg%3E">
 <meta name="theme-color" content="#22395A">
 <meta name="description" content="Live XP standings for the IEEEXtreme host event at Al Hussein Technical University.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -125,9 +128,9 @@ header.blk>div{z-index:1}
 @media (prefers-reduced-motion:no-preference){
  .dot{animation:pulse 1.6s ease-in-out infinite}
  @keyframes pulse{50%{box-shadow:0 0 2px var(--live),0 0 18px var(--live);transform:scale(.75)}}
- .mascot img{animation:bob 3.2s ease-in-out infinite}
+ .mascot .cob{animation:bob var(--bob,3.2s) ease-in-out infinite}
  @keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(-1.5deg)}}
- .mascot::after{content:"";position:absolute;left:50%;bottom:18px;width:120px;height:12px;margin-left:-60px;background:rgba(34,57,90,.35);border-radius:50%;animation:shadow 3.2s ease-in-out infinite}
+ .mascot::after{content:"";position:absolute;left:50%;bottom:18px;width:120px;height:12px;margin-left:-60px;background:rgba(34,57,90,.35);border-radius:50%;animation:shadow var(--bob,3.2s) ease-in-out infinite}
  @keyframes shadow{50%{transform:scaleX(.8);opacity:.6}}
  .blk::before{animation:sway 16s ease-in-out infinite alternate}
  @keyframes sway{to{transform:translate(22px,-14px) scale(1.05) rotate(.6deg)}}
@@ -533,6 +536,35 @@ tr.pinrow td:first-child{box-shadow:inset 6px 0 0 var(--live),inset 0 3px 0 var(
  .fav[aria-pressed=true]{animation:favpop .4s cubic-bezier(.2,1.8,.4,1)}
  @keyframes favpop{from{transform:scale(.3)}}
 }
+/* ---------- mascot reactions ---------- */
+.mascot .cob{position:relative;display:block;border:0;background:none;padding:0;margin:0;cursor:pointer}
+.mascot .cob:focus-visible{outline:3px solid var(--live);outline-offset:4px}
+.mascot .cob img{display:block;transition:filter .6s}
+.mcrown{position:absolute;left:50%;top:-16px;width:56px;height:36px;margin-left:-28px;opacity:0;transform:translateY(-50px);transition:opacity .3s,transform .6s cubic-bezier(.2,1.6,.4,1);
+ background:linear-gradient(#FFD45C,#FFD45C) 0 16px/56px 20px no-repeat,linear-gradient(#FFD45C,#FFD45C) 0 0/10px 16px no-repeat,linear-gradient(#FFD45C,#FFD45C) 23px 0/10px 16px no-repeat,linear-gradient(#FFD45C,#FFD45C) 46px 0/10px 16px no-repeat,
+  linear-gradient(#FF5C7A,#FF5C7A) 24px 21px/8px 8px no-repeat;filter:drop-shadow(0 3px 0 #8A5A00) drop-shadow(0 0 10px rgba(255,212,92,.8))}
+.mascot.m-crown .mcrown{opacity:1;transform:none}
+.mascot.m-crown .cob img{filter:drop-shadow(0 6px 0 rgba(20,40,70,.5)) drop-shadow(0 0 16px rgba(255,212,92,.9))}
+.mascot.m-alert .cob img{filter:drop-shadow(0 6px 0 rgba(20,40,70,.5)) drop-shadow(0 0 14px rgba(255,92,122,.9))}
+.mascot.m-sleep .cob img{filter:drop-shadow(0 6px 0 rgba(20,40,70,.5)) saturate(.35) brightness(.78)}
+.zzz{position:absolute;right:6px;top:10px;width:40px;height:60px;opacity:0;pointer-events:none;transition:opacity .5s}
+.zzz i{position:absolute;left:0;bottom:0;font:700 18px var(--f-pix);font-style:normal;color:var(--deep);text-shadow:2px 2px 0 var(--ice)}
+.zzz i:nth-child(2){left:12px;font-size:14px}.zzz i:nth-child(3){left:24px;font-size:22px}
+.mascot.m-sleep .zzz{opacity:1}
+.bub{position:absolute;right:4px;top:40px;z-index:3;width:118px;box-sizing:border-box;background:#fff;color:var(--deep);border:3px solid var(--deep);box-shadow:4px 4px 0 rgba(20,40,70,.4);
+ padding:8px 7px;font:700 10px/1.5 var(--f-pix);letter-spacing:.04em;text-align:center;overflow-wrap:break-word;opacity:0;transform:scale(.4);transform-origin:0 20px;transition:opacity .2s,transform .25s steps(3);pointer-events:none}
+.bub::after{content:"";position:absolute;left:-11px;top:12px;width:8px;height:12px;background:var(--deep);clip-path:polygon(100% 0,100% 100%,0 0)}
+.bub.on{opacity:1;transform:none}
+.mascot.m-alert{--bob:1s}.mascot.m-sleep{--bob:6s}
+@media (prefers-reduced-motion:no-preference){
+ .mascot.m-strike .cob img{animation:strike .8s steps(8)}
+ @keyframes strike{20%{transform:translateY(-14px) scale(1.12) rotate(-4deg)}35%{transform:translate(-6px,-10px) scale(1.12) rotate(5deg)}50%{transform:translate(6px,-8px) scale(1.1) rotate(-3deg)}70%{transform:translateY(-4px) scale(1.04)}}
+ .mascot.m-crown .mcrown{animation:crown 1.6s ease-in-out .6s infinite}
+ .zzz i{animation:zzz 3s ease-in infinite}.zzz i:nth-child(2){animation-delay:1s}.zzz i:nth-child(3){animation-delay:2s}
+ @keyframes zzz{0%{opacity:0;transform:translate(0,10px) scale(.6)}30%{opacity:1}100%{opacity:0;transform:translate(14px,-46px) scale(1.2)}}
+ .mascot.m-sleep .cob{animation-timing-function:ease-in-out}
+ .mascot.m-alert .bub.on{animation:annbl .5s steps(1) infinite}
+}
 @media (prefers-reduced-motion:reduce){.scan{display:none}}
 </style>
 </head>
@@ -556,7 +588,7 @@ root.innerHTML='<header class="blk"><canvas class="fx" id="fx" aria-hidden="true
 '<div class="sub"><span class="dot" id="dot"></span><span id="subtx">Live standings // search your team</span></div></div>'+
 '<div class="hright"><div class="host"><span class="htag">HOSTED BY</span><div class="brand">'+LOGO_HTU+'<span class="sep" aria-hidden="true"></span>'+LOGO_IEEE+'<i class="pc tl"></i><i class="pc br"></i></div></div><div class="stamp" id="stamp">CONNECTING…</div></div></header>'+
 '<section class="tops" id="tops" aria-label="Top ranks"></section>'+
-'<div class="grid"><div class="side"><div class="blk mascot"><img alt="Stone cobra mascot" src="'+COBRA+'"></div>'+
+'<div class="grid"><div class="side"><div class="blk mascot"><button type="button" class="cob" aria-label="Poke the cobra mascot"><img alt="Stone cobra mascot" src="'+COBRA+'"><i class="mcrown" aria-hidden="true"></i><span class="zzz" aria-hidden="true"><i>Z</i><i>Z</i><i>Z</i></span></button><div class="bub" role="status"></div></div>'+
 '<div class="blk find"><span class="label">FIND YOUR TEAM</span><div class="in"><input type="search" id="q" placeholder="Type your team name" autocomplete="off" aria-label="Search by team name"><div class="count" id="count"></div><div class="hint" id="minehint">Tap &#9734; next to a team to follow it.</div></div></div>'+
 '<div class="blk mine" id="mine" hidden></div></div>'+
 '<div class="blk board"><div class="boardhead"><span class="label">STANDINGS</span><button class="toggle" id="auto" aria-pressed="true">AUTO-SCROLL ON</button></div><div class="tw" id="tw"><table><thead><tr><th>RANK</th><th class="t">TEAM NAME</th><th>XP EARNED</th><th>XP BALANCE</th></tr></thead><tbody id="tb"></tbody></table><div class="empty" id="empty">Loading standings…</div></div></div></div>'+
@@ -716,6 +748,7 @@ function apply(next){
  if(firstRender){firstRender=false;SPL.after(function(){tb.classList.add('intro');setTimeout(function(){tb.classList.remove('intro')},2200)})}
  var was=FOLLOW&&prevMap[FOLLOW],now=FOLLOW&&rowOf(FOLLOW);mine();
  if(changed){countUp();burst(newLeader);slide(pos);overtakes();if(was&&now&&typeof was[0]==='number'&&typeof now[0]==='number'&&was[0]!==now[0])mineMoved(was[0],now[0]);clearTimeout(apply.t);apply.t=setTimeout(function(){prevMap={}},12000)}
+ MASC.update(changed,changed&&newLeader,changed&&overtakes.top,changed&&was&&now&&now[0]<was[0]);
 }
 // rows glide from their old place to the new one
 function slide(pos){if(RM)return;tb.querySelectorAll('tr[data-t]').forEach(function(tr){var y=pos[tr.dataset.t];if(y===undefined||!tr.animate)return;
@@ -729,13 +762,31 @@ function overtakes(){var now={},moves=[];DATA.rows.forEach(function(r){now[r[1]]
    .sort(function(a,b){return now[a][0]-now[b][0]});
   moves.push({t:r[1],from:p[0],to:r[0],passed:passed})});
  var pri=function(m){return m.to===1?0:m.to<=5?1:2};moves.sort(function(a,b){return pri(a)-pri(b)||(b.from-b.to)-(a.from-a.to)});
- if(moves[0]&&moves[0].to<=5)takeover(moves[0]);
+ overtakes.top=moves[0]&&moves[0].to<=5?moves[0]:null;if(overtakes.top)takeover(moves[0]);
  var show=moves.slice(0,3),h=show.map(function(m,i){var lead=m.to===1;
   return '<div class="ovt'+(lead?' lead':m.to<=5?' hot':'')+'" style="animation-delay:'+i*.25+'s,'+(6+i*.25)+'s">'+(lead?'<span class="crn"></span>':'')+'<span class="ovt-tag">'+(lead?'NEW LEADER':'OVERTAKE!')+'</span>'+
    '<div class="ovt-b"><b>'+esc(m.t)+'</b><span class="ovt-r">#'+m.from+'<i>&#9654;</i>#'+m.to+'</span></div>'+
    '<div class="ovt-s">'+(m.passed.length?'PASSED <em>'+esc(m.passed[0])+'</em>'+(m.passed.length>1?' +'+(m.passed.length-1)+' MORE':''):'&#9650; '+(m.from-m.to)+' PLACES')+'</div><u></u></div>'}).join('');
  if(moves.length>3)h+='<div class="ovt" style="animation-delay:.75s,6.75s"><span class="ovt-tag">+'+(moves.length-3)+' MORE MOVES</span><u></u></div>';
  if(!h)return;ovt.innerHTML=h;clearTimeout(overtakes.t);overtakes.t=setTimeout(function(){ovt.innerHTML=''},RM?6000:8000)}
+// mascot reactions: crown for a new leader, strike on top-5 moves, nervous during close battles, asleep when nothing happens
+var MASC=(function(){var m=document.querySelector('.mascot'),bub=m.querySelector('.bub'),bt,ct,last=Date.now(),fight='',SLEEP_MS=10*60e3,
+  POKE=['HISSSS!','SSSOLVE FASTER!','I SMELL A SEGFAULT','HAVE YOU TRIED O(1)?','ONE MORE TEST CASE... SSS','STAY HYDRATED, CODERSSS','NULL POINTER? NOT ON MY WATCH','24 HOURS? EASSSY','COMPILE ERROR? SSSAD','RECURSSSION IS MY FAVOURITE'];
+ function say(t,ms){bub.textContent=t;bub.classList.remove('on');void bub.offsetWidth;bub.classList.add('on');clearTimeout(bt);bt=setTimeout(function(){bub.classList.remove('on')},ms||4500)}
+ function strike(){m.classList.remove('m-strike');void m.offsetWidth;m.classList.add('m-strike');setTimeout(function(){m.classList.remove('m-strike')},900)}
+ function wake(){if(!m.classList.contains('m-sleep'))return false;m.classList.remove('m-sleep');strike();say("HUH?! I'M AWAKE!");return true}
+ function battle(){var t=DATA.rows.filter(function(r){return typeof r[0]==='number'&&r[0]<=5}).sort(function(a,b){return a[0]-b[0]});
+  for(var i=0;i<t.length-1;i++){var g=t[i][2]-t[i+1][2];if(t[i][0]!==t[i+1][0]&&g>0&&g<=5)return[t[i][1],t[i+1][1]]}return null}
+ m.querySelector('.cob').addEventListener('click',function(){if(!wake()){strike();say(POKE[Math.random()*POKE.length|0],3500)}});
+ setInterval(function(){if(Date.now()-last>SLEEP_MS&&!m.classList.contains('m-sleep')){m.classList.add('m-sleep');bub.classList.remove('on')}},15000);
+ return{update:function(changed,lead,top,mineUp){var woke=false,b=battle(),key=b?b.join('|'):'';if(changed){last=Date.now();woke=wake()}
+  m.classList.toggle('m-alert',!!b);
+  if(lead){var l=DATA.rows.filter(function(r){return r[0]===1})[0];m.classList.add('m-crown');clearTimeout(ct);ct=setTimeout(function(){m.classList.remove('m-crown')},45000);strike();if(l)say('ALL HAIL '+l[1]+'!',6000)}
+  else if(top){strike();say('SSSNAP! '+top.t+' STRIKES',5000)}
+  else if(mineUp&&FOLLOW)say('GO '+FOLLOW+'!')
+  else if(b&&key!==fight&&!woke)say('CLOSE BATTLE! '+b[0]+' VS '+b[1],5000);
+  fight=key}}})();
+
 // top-5 moves get a full-width takeover banner and a screen shake
 function takeover(m){if(document.body.classList.contains('splashing'))return;var old=document.querySelector('.tko');if(old)old.remove();
  var lead=m.to===1,d=document.createElement('div');d.className='tko'+(lead?' lead':'');d.setAttribute('aria-hidden','true');
