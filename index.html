@@ -334,6 +334,9 @@ body.splashing #root,body.splashing #root *,body.splashing #root *::before,body.
 .annpin em{font-style:normal;color:var(--live)}
 .annpin:focus-visible{outline:3px solid var(--live)}
 @media (max-width:520px){.annpin{flex-wrap:wrap;font-size:15px}}
+.sndchip{position:fixed;left:16px;bottom:16px;z-index:60;font:700 11px var(--f-pix);letter-spacing:.14em;border:2px solid var(--live);background:var(--deep);color:var(--live);padding:8px 12px;cursor:pointer;box-shadow:4px 4px 0 rgba(20,40,70,.4)}
+.sndchip.off{border-color:#FFC857;color:#FFC857}
+@media (prefers-reduced-motion:no-preference){.sndchip.off{animation:pcblink 1s steps(1) infinite}}
 @media (prefers-reduced-motion:no-preference){
  .ann{animation:annin .35s steps(4) both}
  @keyframes annin{from{opacity:0}}
@@ -538,6 +541,12 @@ if(API_URL.indexOf('script.google.com')<0){SPL.fail();empty.textContent='Set API
  function unlock(){if(unlocked)return;unlocked=true;list.forEach(function(a){if(!a.au)return;var au=a.au;au.muted=true;
   var pr=au.play();if(pr&&pr.then)pr.then(function(){if(au.muted){au.pause();au.currentTime=0}au.muted=false},function(){au.muted=false;unlocked=false});else au.muted=false})}
  ['pointerdown','keydown'].forEach(function(ev){document.addEventListener(ev,unlock,true)});
+ // corner chip so whoever runs the screen can see whether the sound will play on its own
+ var chip=document.createElement('button'),AC=window.AudioContext||window.webkitAudioContext,allowed=null;chip.type='button';chip.className='sndchip';chip.hidden=true;document.body.appendChild(chip);
+ function probe(){if(!AC)return null;try{var c=new AC(),ok=c.state==='running';c.close();return ok}catch(e){return null}}
+ function chipUpd(){var next=list.filter(function(a){return a.au&&!a.done})[0];if(!next||allowed===null){chip.hidden=true;return}
+  chip.hidden=false;chip.classList.toggle('off',!allowed);chip.textContent=allowed?'\u266A SOUND READY FOR '+fmt(next):'\u26A0 CLICK TO ENABLE SOUND FOR '+fmt(next)}
+ allowed=probe();document.addEventListener('pointerdown',function(){setTimeout(function(){allowed=probe();chipUpd()},50)},true);
  function fmt(a){return new Date(a.at).toLocaleTimeString('en-GB',{timeZone:'Asia/Amman',hour:'2-digit',minute:'2-digit'})}
  function rich(t){return esc(t).replace(/(\d+\s*points?)/i,'<em>$1</em>')}
  function play(a,btn){if(!a.au)return;a.au.pause();a.au.currentTime=0;a.au.volume=1;a.au.muted=false;
@@ -559,7 +568,7 @@ if(API_URL.indexOf('script.google.com')<0){SPL.fail();empty.textContent='Set API
   b.innerHTML='<b>ANNOUNCEMENT</b><span class="tm">'+fmt(a)+'</span><span>'+rich(a.text)+'</span>';b.onclick=function(){show(a)};
   if(!pinned){pinned=b;root.insertBefore(b,document.getElementById('tops'))}}
  document.addEventListener('keydown',function(e){if(cur&&e.key==='Escape')close()});
- function check(){var now=Date.now();list.forEach(function(a){if(a.done||now<a.at)return;a.done=true;if(now-a.at<LATE)show(a);else pin(a)})}
+ function check(){var now=Date.now();list.forEach(function(a){if(a.done||now<a.at)return;a.done=true;if(now-a.at<LATE)show(a);else pin(a)});chipUpd()}
  check();setInterval(check,1000);document.addEventListener('visibilitychange',check);
 })();
 })();
