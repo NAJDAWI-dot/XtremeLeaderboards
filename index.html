@@ -501,6 +501,38 @@ tr.rise.hot.top td.r{background:#FFD45C;color:var(--deep)}
  .tko-tag{animation:annbl .25s steps(1) infinite}
  .tko-crn{animation:crown .8s ease-in-out infinite}
 }
+/* ---------- follow your team ---------- */
+.fav{border:0;background:none;padding:0 8px 0 0;margin:0;font:20px/1 system-ui,sans-serif;color:var(--steel);cursor:pointer;vertical-align:-2px}
+.fav:hover,.fav:focus-visible{color:var(--deep);outline:0}
+.fav[aria-pressed=true]{color:#D99A00;text-shadow:0 0 6px rgba(255,212,92,.9)}
+.you{display:inline-block;margin-left:8px;font:700 11px var(--f-pix);letter-spacing:.12em;color:var(--deep);background:var(--live);padding:2px 6px;vertical-align:2px}
+tbody tr.mine{background:#CFFCE3}
+tr.mine td{box-shadow:inset 0 3px 0 var(--live),inset 0 -3px 0 var(--live)}
+tr.mine td:first-child{box-shadow:inset 6px 0 0 var(--live),inset 0 3px 0 var(--live),inset 0 -3px 0 var(--live)}
+tr.pinrow td{position:sticky;top:var(--th,44px);z-index:3;background-color:#CFFCE3;box-shadow:inset 0 3px 0 var(--live),inset 0 -3px 0 var(--live),0 5px 0 rgba(20,40,70,.3)}
+tr.pinrow td:first-child{box-shadow:inset 6px 0 0 var(--live),inset 0 3px 0 var(--live),inset 0 -3px 0 var(--live),0 5px 0 rgba(20,40,70,.3)}
+.mine{padding:0 0 16px}
+.mine .unf{position:absolute;right:10px;top:7px;z-index:1;border:0;background:var(--deep);color:var(--ice);font:700 11px var(--f-pix);letter-spacing:.1em;padding:7px 9px;cursor:pointer}
+.mine .unf:focus-visible{outline:3px solid var(--live)}
+.mc{margin:14px 16px 0;background:var(--deep);color:var(--ice);padding:14px;display:grid;gap:12px;border-left:6px solid var(--live);box-shadow:6px 6px 0 rgba(20,40,70,.35)}
+.mc-top{display:flex;align-items:center;gap:12px;min-width:0}
+.mc-rk{flex:none;font:700 40px var(--f-pix);line-height:1;color:var(--live);text-shadow:3px 3px 0 #0B1626}
+.mc-nm{font:600 18px var(--f-body);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.mc-st{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mc-st div{background:rgba(139,184,221,.12);padding:8px 10px;display:grid;gap:2px}
+.mc-st b{font:700 22px var(--f-pix);color:#fff;font-variant-numeric:tabular-nums}
+.mc-st span{font:10px var(--f-pix);letter-spacing:.14em;color:var(--sky)}
+.mc-gap{font:11px/1.6 var(--f-pix);letter-spacing:.06em;color:var(--sky)}
+.mc-gap b{color:#FFC857}.mc-gap.dn b,.mc-gap.lead b{color:var(--live)}
+.mc-gap em{font:600 14px var(--f-body);font-style:normal;color:#fff;letter-spacing:0}
+.ovt.me{--oc:#7FE7FF}.ovt.me.down{--oc:#FF5C7A}
+@media (max-width:520px){.fav{font-size:15px;padding-right:4px}.you{margin-left:4px;font-size:9px;padding:1px 4px}}
+@media (prefers-reduced-motion:no-preference){
+ .mine.moved .mc{animation:minefl .5s steps(1) 6}
+ @keyframes minefl{50%{box-shadow:0 0 0 4px var(--live),0 0 30px var(--live)}}
+ .fav[aria-pressed=true]{animation:favpop .4s cubic-bezier(.2,1.8,.4,1)}
+ @keyframes favpop{from{transform:scale(.3)}}
+}
 @media (prefers-reduced-motion:reduce){.scan{display:none}}
 </style>
 </head>
@@ -525,7 +557,8 @@ root.innerHTML='<header class="blk"><canvas class="fx" id="fx" aria-hidden="true
 '<div class="hright"><div class="host"><span class="htag">HOSTED BY</span><div class="brand">'+LOGO_HTU+'<span class="sep" aria-hidden="true"></span>'+LOGO_IEEE+'<i class="pc tl"></i><i class="pc br"></i></div></div><div class="stamp" id="stamp">CONNECTING…</div></div></header>'+
 '<section class="tops" id="tops" aria-label="Top ranks"></section>'+
 '<div class="grid"><div class="side"><div class="blk mascot"><img alt="Stone cobra mascot" src="'+COBRA+'"></div>'+
-'<div class="blk find"><span class="label">FIND YOUR TEAM</span><div class="in"><input type="search" id="q" placeholder="Type your team name" autocomplete="off" aria-label="Search by team name"><div class="count" id="count"></div></div></div></div>'+
+'<div class="blk find"><span class="label">FIND YOUR TEAM</span><div class="in"><input type="search" id="q" placeholder="Type your team name" autocomplete="off" aria-label="Search by team name"><div class="count" id="count"></div><div class="hint" id="minehint">Tap &#9734; next to a team to follow it.</div></div></div>'+
+'<div class="blk mine" id="mine" hidden></div></div>'+
 '<div class="blk board"><div class="boardhead"><span class="label">STANDINGS</span><button class="toggle" id="auto" aria-pressed="true">AUTO-SCROLL ON</button></div><div class="tw" id="tw"><table><thead><tr><th>RANK</th><th class="t">TEAM NAME</th><th>XP EARNED</th><th>XP BALANCE</th></tr></thead><tbody id="tb"></tbody></table><div class="empty" id="empty">Loading standings…</div></div></div></div>'+
 '<div class="ticker" aria-label="Teams with XP"><span class="lead">XP FEED</span><div class="track" id="track"></div></div>'+
 FOOT+'<canvas id="burst" aria-hidden="true"></canvas><div class="scan" aria-hidden="true"></div>';
@@ -615,11 +648,40 @@ function render(){
  if(!DATA)return;
  var s=q.value.trim().toLowerCase();
  var rows=DATA.rows.filter(function(r){return !s||String(r[1]).toLowerCase().indexOf(s)>-1});
- tb.innerHTML=rows.map(function(r,i){var p=prevMap[r[1]],gain=p?r[2]-p[2]:0,mv=p&&typeof p[0]==='number'&&typeof r[0]==='number'?p[0]-r[0]:0;
-  return '<tr data-t="'+esc(r[1])+'" class="'+(r[0]===1?'top ':'')+(gain>0?'up ':'')+(mv>0?'rise'+(r[0]<=5?' hot':''):mv<0?'fall':'')+'" style="--i:'+Math.min(i,24)+'"><td class="r">'+esc(r[0])+(mv>0?'<span class="mv">▲'+mv+'</span>':mv<0?'<span class="mv dn">▼'+(-mv)+'</span>':'')+'</td><td class="t">'+esc(r[1])+(gain>0?'<span class="gain">+'+gain+' XP</span>':'')+'</td><td'+(gain>0?' data-from="'+p[2]+'" data-to="'+r[2]+'"':'')+'>'+esc(r[2])+'</td><td>'+esc(r[3])+'</td></tr>'}).join('');
+ var pin=FOLLOW&&!s?rowOf(FOLLOW):null;
+ tb.innerHTML=(pin?rowHtml(pin,0,true):'')+rows.map(function(r,i){return rowHtml(r,i,false)}).join('');
+ document.getElementById('tw').style.setProperty('--th',document.querySelector('#tw thead').offsetHeight+'px');
  empty.hidden=rows.length>0;empty.textContent='No team matches that name.';
  document.getElementById('count').textContent=s?(rows.length+' OF '+DATA.rows.length+' TEAMS'):(DATA.rows.length+' TEAMS');
 }
+function rowHtml(r,i,pin){var p=prevMap[r[1]],gain=p?r[2]-p[2]:0,mv=p&&typeof p[0]==='number'&&typeof r[0]==='number'?p[0]-r[0]:0,me=r[1]===FOLLOW;
+ return '<tr'+(pin?'':' data-t="'+esc(r[1])+'"')+' class="'+(pin?'pinrow ':'')+(me?'mine ':'')+(r[0]===1?'top ':'')+(gain>0?'up ':'')+(mv>0?'rise'+(r[0]<=5?' hot':''):mv<0?'fall':'')+'" style="--i:'+Math.min(i,24)+'"><td class="r">'+esc(r[0])+(mv>0?'<span class="mv">▲'+mv+'</span>':mv<0?'<span class="mv dn">▼'+(-mv)+'</span>':'')+'</td>'+
+  '<td class="t"><button type="button" class="fav" data-f="'+esc(r[1])+'" aria-pressed="'+me+'" aria-label="'+(me?'Stop following ':'Follow ')+esc(r[1])+'">'+(me?'&#9733;':'&#9734;')+'</button>'+esc(r[1])+(me?'<span class="you">YOU</span>':'')+(gain>0?'<span class="gain">+'+gain+' XP</span>':'')+'</td><td'+(gain>0?' data-from="'+p[2]+'" data-to="'+r[2]+'"':'')+'>'+esc(r[2])+'</td><td>'+esc(r[3])+'</td></tr>'}
+
+// follow your team: remembered on this device only
+var FOLLOW=null,BASE_TITLE=document.title;try{FOLLOW=localStorage.getItem('xp-lb-follow')}catch(e){}
+function rowOf(t){if(!DATA)return null;for(var i=0;i<DATA.rows.length;i++)if(DATA.rows[i][1]===t)return DATA.rows[i];return null}
+function follow(t){FOLLOW=FOLLOW===t?null:t;try{if(FOLLOW)localStorage.setItem('xp-lb-follow',FOLLOW);else localStorage.removeItem('xp-lb-follow')}catch(e){}render();mine()}
+function mine(){var c=document.getElementById('mine');document.getElementById('minehint').hidden=!!FOLLOW;
+ if(!FOLLOW||!DATA){c.hidden=true;document.title=BASE_TITLE;return}c.hidden=false;
+ var r=rowOf(FOLLOW),rk=r&&r[0],ab=null,be=null,tie=0,g='';
+ if(r&&typeof rk==='number')DATA.rows.forEach(function(o){if(o[1]===FOLLOW||typeof o[0]!=='number')return;if(o[0]===rk)tie++;
+  if(o[0]<rk&&(!ab||o[0]>ab[0]))ab=o;if(o[0]>rk&&(!be||o[0]<be[0]))be=o});
+ if(!r)g='<div class="mc-gap">NOT IN THE STANDINGS RIGHT NOW</div>';
+ else{if(ab)g+='<div class="mc-gap">&#9650; <b>'+(ab[2]-r[2])+' XP</b> BEHIND <em>#'+esc(ab[0])+' '+esc(ab[1])+'</em></div>';
+  else g+='<div class="mc-gap lead">&#9733; <b>'+(tie?'TIED FOR #1':'LEADING')+'</b>'+(be?' BY '+(r[2]-be[2])+' XP':'')+'</div>';
+  if(tie&&ab)g+='<div class="mc-gap">TIED WITH '+tie+' TEAM'+(tie>1?'S':'')+'</div>';
+  if(be&&ab)g+='<div class="mc-gap dn">&#9660; <b>'+(r[2]-be[2])+' XP</b> AHEAD OF <em>#'+esc(be[0])+' '+esc(be[1])+'</em></div>'}
+ c.innerHTML='<span class="label">YOUR TEAM</span><button type="button" class="unf" data-unf aria-label="Stop following '+esc(FOLLOW)+'">&#10005;</button>'+
+  '<div class="mc"><div class="mc-top"><div class="mc-rk">'+(r?'#'+esc(rk):'--')+'</div><div class="mc-nm">'+esc(FOLLOW)+'</div></div>'+
+  (r?'<div class="mc-st"><div><b>'+esc(r[2])+'</b><span>XP EARNED</span></div><div><b>'+esc(r[3])+'</b><span>XP BALANCE</span></div></div>':'')+g+'</div>';
+ document.title=r?'#'+rk+' '+FOLLOW+' · '+BASE_TITLE:BASE_TITLE}
+function mineMoved(from,to){var up=to<from,c=document.getElementById('mine');
+ try{if(navigator.vibrate)navigator.vibrate(up?[70,50,70]:[350])}catch(e){}
+ var d=document.createElement('div');d.className='ovt me'+(up?'':' down');
+ d.innerHTML='<span class="ovt-tag">YOUR TEAM '+(up?'&#9650; UP':'&#9660; DOWN')+'</span><div class="ovt-b"><b>'+esc(FOLLOW)+'</b><span class="ovt-r">#'+from+'<i>&#9654;</i>#'+to+'</span></div><u></u>';
+ ovt.insertBefore(d,ovt.firstChild);setTimeout(function(){d.remove()},7000);
+ c.classList.remove('moved');void c.offsetWidth;c.classList.add('moved')}
 function countUp(){if(RM)return;tb.querySelectorAll('td[data-to]').forEach(function(td){var a=+td.dataset.from,b=+td.dataset.to,t0=performance.now();
  (function step(t){var k=Math.min(1,(t-t0)/1100);td.textContent=Math.round(a+(b-a)*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step)})(t0)})}
 function stamp(fresh){var el=document.getElementById('stamp');el.textContent='UPDATED '+new Date(DATA.updated).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}).toUpperCase();
@@ -652,7 +714,8 @@ function apply(next){
   newLeader=top(DATA)!==top(next);}
  DATA=next;render();tops();ticker();stamp(changed);SPL.data(DATA.rows.length);
  if(firstRender){firstRender=false;SPL.after(function(){tb.classList.add('intro');setTimeout(function(){tb.classList.remove('intro')},2200)})}
- if(changed){countUp();burst(newLeader);slide(pos);overtakes();clearTimeout(apply.t);apply.t=setTimeout(function(){prevMap={}},12000)}
+ var was=FOLLOW&&prevMap[FOLLOW],now=FOLLOW&&rowOf(FOLLOW);mine();
+ if(changed){countUp();burst(newLeader);slide(pos);overtakes();if(was&&now&&typeof was[0]==='number'&&typeof now[0]==='number'&&was[0]!==now[0])mineMoved(was[0],now[0]);clearTimeout(apply.t);apply.t=setTimeout(function(){prevMap={}},12000)}
 }
 // rows glide from their old place to the new one
 function slide(pos){if(RM)return;tb.querySelectorAll('tr[data-t]').forEach(function(tr){var y=pos[tr.dataset.t];if(y===undefined||!tr.animate)return;
@@ -693,6 +756,8 @@ function poll(){
  .then(function(){busy=false});
 }
 q.addEventListener('input',render);
+tb.addEventListener('click',function(e){var b=e.target.closest('.fav');if(b)follow(b.dataset.f)});
+document.getElementById('mine').addEventListener('click',function(e){if(e.target.closest('[data-unf]'))follow(FOLLOW)});
 document.addEventListener('visibilitychange',function(){if(!document.hidden)poll()});
 if(API_URL.indexOf('script.google.com')<0){SPL.fail();empty.textContent='Set API_URL in the SETTINGS block at the top of this file.'}else{poll();setInterval(poll,POLL_MS)}
 
