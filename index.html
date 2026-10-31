@@ -19,7 +19,13 @@ window.XP_SETTINGS = {
   API_URL: 'https://script.google.com/macros/s/AKfycbzq8R8ahyrxXpRWJXQNuns0Ekojal1SyD3MC-NqOVDiWyVN_xRKn0rD_pb1KdQZlcYS/exec',
   POLL_MS: 10000,
   ANNOUNCEMENTS: [
-    { at: '2026-10-31T04:00:00+03:00', text: 'Easy selected problem gain - 3 points when solved', sound: 'announcement.mp3' }
+    { at: '2026-10-31T04:00:00+03:00', text: 'Easy selected problem gain - 3 points when solved', sound: 'announcement.mp3' },
+    { at: '2026-10-31T06:00:00+03:00', text: 'Speed bonus for this selected problem - solve it as fast as possible', sound: 'announcement.mp3' },
+    { at: '2026-10-31T10:00:00+03:00', text: 'Medium selected problem gain 6 points when solved.', sound: 'announcement.mp3' },
+    { at: '2026-10-31T12:00:00+03:00', text: 'Speed bonus for this selected problem - solve it as fast as possible', sound: 'announcement.mp3' },
+    { at: '2026-10-31T14:00:00+03:00', text: 'Hard selected problem gain 10 points when solved', sound: 'announcement.mp3' },
+    { at: '2026-10-31T16:00:00+03:00', text: 'Speed bonus for this selected problem - solve it as fast as possible', sound: 'announcement.mp3' },
+    { at: '2026-10-31T18:00:00+03:00', text: 'Harder selected problem gain 14 points when solved', sound: 'announcement.mp3' }
   ]
 };
 </script>
@@ -541,9 +547,9 @@ if(API_URL.indexOf('script.google.com')<0){SPL.fail();empty.textContent='Set API
  if(!list.length)return;
  var LATE=15*60e3,cur=null,pinned=null,unlocked=false;
  if(/[?&]announce\b/.test(location.search))list[0].at=Date.now()+(RM?2500:7000);
- list.forEach(function(a){if(a.sound){a.au=new Audio(a.sound);a.au.preload='auto'}});
+ var sounds={};list.forEach(function(a){if(a.sound){a.au=sounds[a.sound]||(sounds[a.sound]=new Audio(a.sound));a.au.preload='auto'}});
  // browsers only let a page play sound after someone has interacted with it, so use the first click or key press to unlock audio
- function unlock(){if(unlocked)return;unlocked=true;list.forEach(function(a){if(!a.au)return;var au=a.au;au.muted=true;
+ function unlock(){if(unlocked)return;unlocked=true;Object.keys(sounds).forEach(function(k){var au=sounds[k];if(!au.paused)return;au.muted=true;
   var pr=au.play();if(pr&&pr.then)pr.then(function(){if(au.muted){au.pause();au.currentTime=0}au.muted=false},function(){au.muted=false;unlocked=false});else au.muted=false})}
  ['pointerdown','keydown'].forEach(function(ev){document.addEventListener(ev,unlock,true)});
  // corner chip so whoever runs the screen can see whether the sound will play on its own
