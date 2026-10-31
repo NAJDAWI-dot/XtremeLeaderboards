@@ -455,6 +455,52 @@ tr.fall td{color:#5E7390}
  .ovt-tag{animation:annbl .4s steps(1) 6}
  .ovt .crn{animation:crown 1.2s ease-in-out infinite}
 }
+/* ---------- top-5 overtakes ---------- */
+tr.rise.hot td.r{background:#FF5C7A;color:#fff}
+tr.rise.hot.top td.r{background:#FFD45C;color:var(--deep)}
+.ovt.hot{--oc:#FF5C7A}
+.ovt.hot::before,.ovt.lead::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:repeating-linear-gradient(45deg,var(--oc) 0 8px,#0B1626 8px 16px)}
+.tko{--tc:#FF5C7A;position:fixed;inset:0;z-index:80;display:grid;place-items:center;pointer-events:none;overflow:hidden}
+.tko.lead{--tc:#FFD45C}
+.tko-fl{position:absolute;inset:0;background:var(--tc);opacity:0}
+.tko-sq{position:absolute;width:min(900px,90vw);height:40vh;border:5px solid var(--tc);opacity:0}
+.tko-band{position:relative;width:100%;box-sizing:border-box;padding:clamp(16px,3.4vh,32px) 16px;background:rgba(10,20,36,.94);display:grid;justify-items:center;gap:clamp(6px,1.2vh,12px);text-align:center;
+ box-shadow:0 0 0 4px var(--tc),0 0 70px color-mix(in srgb,var(--tc) 60%,transparent)}
+.tko-band::before,.tko-band::after{content:"";position:absolute;left:0;right:0;height:16px;background:repeating-linear-gradient(45deg,var(--tc) 0 18px,#0B1626 18px 36px)}
+.tko-band::before{top:-20px}.tko-band::after{bottom:-20px}
+.tko-tag{font:700 clamp(13px,1.9vw,22px) var(--f-pix);letter-spacing:.42em;padding-left:.42em;color:#0B1626;background:var(--tc);padding:6px 14px 6px 20px}
+.tko-name{font:700 clamp(30px,6.6vw,88px) var(--f-pix);line-height:1.05;color:#fff;text-shadow:5px 5px 0 #0B1626,0 0 34px var(--tc);max-width:94vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tko-rk{font:700 clamp(16px,2.8vw,34px) var(--f-pix);letter-spacing:.08em;color:var(--tc);font-variant-numeric:tabular-nums}
+.tko-rk i{font-style:normal;color:#fff;margin:0 .3em}
+.tko-ps{font:700 clamp(11px,1.4vw,16px) var(--f-pix);letter-spacing:.24em;color:var(--sky)}
+.tko-ps em{font-style:normal;color:#fff}
+.tko-crn{width:44px;height:28px;background:linear-gradient(var(--tc),var(--tc)) 0 12px/44px 16px no-repeat,linear-gradient(var(--tc),var(--tc)) 0 0/8px 12px no-repeat,linear-gradient(var(--tc),var(--tc)) 18px 0/8px 12px no-repeat,linear-gradient(var(--tc),var(--tc)) 36px 0/8px 12px no-repeat}
+.tko.bye{opacity:0;transition:opacity .4s}
+@media (prefers-reduced-motion:no-preference){
+ tr.rise.hot td{background-image:linear-gradient(90deg,transparent,rgba(255,92,122,.75),rgba(255,212,92,.6),transparent);animation:streak .55s ease-out 5,hotflash .9s ease-out 4}
+ @keyframes hotflash{25%{background-color:#FFD6DE}}
+ tr.rise.hot td.r{animation:rankpop .6s cubic-bezier(.2,1.8,.4,1) .9s both,hotrank .5s steps(1) 8}
+ @keyframes hotrank{50%{background:#fff;color:#C2334E}}
+ .ovt.hot,.ovt.lead{animation:ovtin .55s steps(6) both,ovtshake .45s steps(6) .55s 3,ovtout .4s steps(4) forwards var(--life,6s)}
+ @keyframes ovtshake{25%{transform:translate(-5px,2px)}50%{transform:translate(4px,-2px)}75%{transform:translate(-3px,1px)}}
+ .ovt.hot::before,.ovt.lead::before{animation:march .6s linear infinite}
+ @keyframes march{to{background-position:32px 0}}
+ #root.quake>:not(#burst):not(.scan){animation:quake .6s steps(10) 2}
+ @keyframes quake{0%,100%{transform:none}10%{transform:translate(-10px,5px)}20%{transform:translate(9px,-6px)}30%{transform:translate(-7px,-4px)}40%{transform:translate(8px,6px)}50%{transform:translate(-6px,3px)}60%{transform:translate(5px,-5px)}70%{transform:translate(-4px,4px)}80%{transform:translate(3px,-2px)}90%{transform:translate(-2px,1px)}}
+ .tko-fl{animation:tkofl .7s steps(4) both}
+ @keyframes tkofl{0%{opacity:.75}30%{opacity:.15}45%{opacity:.5}100%{opacity:0}}
+ .tko-sq{animation:tkosq .9s ease-out .15s 3}
+ @keyframes tkosq{from{transform:scale(.6);opacity:.9}to{transform:scale(1.5);opacity:0}}
+ .tko-band{animation:tkoin .55s cubic-bezier(.2,1.6,.4,1) both,tkoout .45s steps(5) 3.1s forwards}
+ @keyframes tkoin{0%{transform:scaleY(0) skewX(-30deg);filter:brightness(3)}60%{transform:scaleY(1.15) skewX(4deg)}100%{transform:none}}
+ @keyframes tkoout{40%{transform:translateX(-30px) skewX(12deg);filter:brightness(2)}100%{transform:translateX(110vw) skewX(-20deg);opacity:0}}
+ .tko-band::before,.tko-band::after{animation:march .5s linear infinite}
+ .tko-name{animation:tkoname .5s steps(5) .35s both,annbl .3s steps(1) .9s 6}
+ @keyframes tkoname{0%{clip-path:inset(0 100% 0 0);transform:translateX(-20px)}100%{clip-path:inset(0);transform:none}}
+ .tko-rk{animation:tkoname .4s steps(4) .7s both}
+ .tko-tag{animation:annbl .25s steps(1) infinite}
+ .tko-crn{animation:crown .8s ease-in-out infinite}
+}
 @media (prefers-reduced-motion:reduce){.scan{display:none}}
 </style>
 </head>
@@ -570,7 +616,7 @@ function render(){
  var s=q.value.trim().toLowerCase();
  var rows=DATA.rows.filter(function(r){return !s||String(r[1]).toLowerCase().indexOf(s)>-1});
  tb.innerHTML=rows.map(function(r,i){var p=prevMap[r[1]],gain=p?r[2]-p[2]:0,mv=p&&typeof p[0]==='number'&&typeof r[0]==='number'?p[0]-r[0]:0;
-  return '<tr data-t="'+esc(r[1])+'" class="'+(r[0]===1?'top ':'')+(gain>0?'up ':'')+(mv>0?'rise':mv<0?'fall':'')+'" style="--i:'+Math.min(i,24)+'"><td class="r">'+esc(r[0])+(mv>0?'<span class="mv">▲'+mv+'</span>':mv<0?'<span class="mv dn">▼'+(-mv)+'</span>':'')+'</td><td class="t">'+esc(r[1])+(gain>0?'<span class="gain">+'+gain+' XP</span>':'')+'</td><td'+(gain>0?' data-from="'+p[2]+'" data-to="'+r[2]+'"':'')+'>'+esc(r[2])+'</td><td>'+esc(r[3])+'</td></tr>'}).join('');
+  return '<tr data-t="'+esc(r[1])+'" class="'+(r[0]===1?'top ':'')+(gain>0?'up ':'')+(mv>0?'rise'+(r[0]<=5?' hot':''):mv<0?'fall':'')+'" style="--i:'+Math.min(i,24)+'"><td class="r">'+esc(r[0])+(mv>0?'<span class="mv">▲'+mv+'</span>':mv<0?'<span class="mv dn">▼'+(-mv)+'</span>':'')+'</td><td class="t">'+esc(r[1])+(gain>0?'<span class="gain">+'+gain+' XP</span>':'')+'</td><td'+(gain>0?' data-from="'+p[2]+'" data-to="'+r[2]+'"':'')+'>'+esc(r[2])+'</td><td>'+esc(r[3])+'</td></tr>'}).join('');
  empty.hidden=rows.length>0;empty.textContent='No team matches that name.';
  document.getElementById('count').textContent=s?(rows.length+' OF '+DATA.rows.length+' TEAMS'):(DATA.rows.length+' TEAMS');
 }
@@ -610,8 +656,8 @@ function apply(next){
 }
 // rows glide from their old place to the new one
 function slide(pos){if(RM)return;tb.querySelectorAll('tr[data-t]').forEach(function(tr){var y=pos[tr.dataset.t];if(y===undefined||!tr.animate)return;
- var dy=y-tr.getBoundingClientRect().top;if(Math.abs(dy)<2)return;
- tr.animate([{transform:'translateY('+dy+'px)'+(dy>0?' scale(1.03)':'')},{transform:'translateY('+dy*.15+'px)'+(dy>0?' scale(1.03)':''),offset:.75},{transform:'none'}],{duration:dy>0?1300:1100,easing:'cubic-bezier(.3,.9,.3,1)'})})}
+ var dy=y-tr.getBoundingClientRect().top,hot=tr.classList.contains('hot'),sc=dy>0?(hot?' scale(1.07)':' scale(1.03)'):'';if(Math.abs(dy)<2)return;
+ tr.animate([{transform:'translateY('+dy+'px)'+sc},{transform:'translateY('+dy*.15+'px)'+sc,offset:.75},{transform:'none'}],{duration:dy>0?(hot?1600:1300):1100,easing:'cubic-bezier(.3,.9,.3,1)'})})}
 // cards naming who passed whom
 var ovt=document.createElement('div');ovt.id='ovt';ovt.setAttribute('aria-live','polite');document.body.appendChild(ovt);
 function overtakes(){var now={},moves=[];DATA.rows.forEach(function(r){now[r[1]]=r});
@@ -619,13 +665,23 @@ function overtakes(){var now={},moves=[];DATA.rows.forEach(function(r){now[r[1]]
   var passed=Object.keys(prevMap).filter(function(t){var q=prevMap[t],n=now[t];return t!==r[1]&&n&&typeof q[0]==='number'&&q[0]<p[0]&&n[0]>r[0]})
    .sort(function(a,b){return now[a][0]-now[b][0]});
   moves.push({t:r[1],from:p[0],to:r[0],passed:passed})});
- moves.sort(function(a,b){return(a.to===1?-1:0)-(b.to===1?-1:0)||(b.from-b.to)-(a.from-a.to)});
+ var pri=function(m){return m.to===1?0:m.to<=5?1:2};moves.sort(function(a,b){return pri(a)-pri(b)||(b.from-b.to)-(a.from-a.to)});
+ if(moves[0]&&moves[0].to<=5)takeover(moves[0]);
  var show=moves.slice(0,3),h=show.map(function(m,i){var lead=m.to===1;
-  return '<div class="ovt'+(lead?' lead':'')+'" style="animation-delay:'+i*.25+'s,'+(6+i*.25)+'s">'+(lead?'<span class="crn"></span>':'')+'<span class="ovt-tag">'+(lead?'NEW LEADER':'OVERTAKE!')+'</span>'+
+  return '<div class="ovt'+(lead?' lead':m.to<=5?' hot':'')+'" style="animation-delay:'+i*.25+'s,'+(6+i*.25)+'s">'+(lead?'<span class="crn"></span>':'')+'<span class="ovt-tag">'+(lead?'NEW LEADER':'OVERTAKE!')+'</span>'+
    '<div class="ovt-b"><b>'+esc(m.t)+'</b><span class="ovt-r">#'+m.from+'<i>&#9654;</i>#'+m.to+'</span></div>'+
    '<div class="ovt-s">'+(m.passed.length?'PASSED <em>'+esc(m.passed[0])+'</em>'+(m.passed.length>1?' +'+(m.passed.length-1)+' MORE':''):'&#9650; '+(m.from-m.to)+' PLACES')+'</div><u></u></div>'}).join('');
  if(moves.length>3)h+='<div class="ovt" style="animation-delay:.75s,6.75s"><span class="ovt-tag">+'+(moves.length-3)+' MORE MOVES</span><u></u></div>';
  if(!h)return;ovt.innerHTML=h;clearTimeout(overtakes.t);overtakes.t=setTimeout(function(){ovt.innerHTML=''},RM?6000:8000)}
+// top-5 moves get a full-width takeover banner and a screen shake
+function takeover(m){if(document.body.classList.contains('splashing'))return;var old=document.querySelector('.tko');if(old)old.remove();
+ var lead=m.to===1,d=document.createElement('div');d.className='tko'+(lead?' lead':'');d.setAttribute('aria-hidden','true');
+ d.innerHTML='<div class="tko-fl"></div><div class="tko-sq"></div><div class="tko-band">'+(lead?'<span class="tko-crn"></span>':'')+
+  '<span class="tko-tag">'+(lead?'NEW LEADER':'TOP 5 OVERTAKE')+'</span><div class="tko-name">'+esc(m.t)+'</div>'+
+  '<div class="tko-rk">#'+m.from+'<i>&#9654;&#9654;</i>#'+m.to+'</div>'+(m.passed.length?'<div class="tko-ps">PASSED <em>'+esc(m.passed[0])+'</em>'+(m.passed.length>1?' +'+(m.passed.length-1)+' MORE':'')+'</div>':'')+'</div>';
+ document.body.appendChild(d);
+ if(!RM){root.classList.remove('quake');void root.offsetWidth;root.classList.add('quake');setTimeout(function(){root.classList.remove('quake')},1300);setTimeout(function(){burst(true)},500)}
+ setTimeout(function(){if(RM){d.classList.add('bye');setTimeout(function(){d.remove()},420)}else d.remove()},RM?3200:3700)}
 function status(ok){document.getElementById('dot').className='dot'+(ok?'':' stale');
  document.getElementById('subtx').textContent=ok?'Live standings // search your team':'Reconnecting… // showing last scores';}
 var busy=false;
